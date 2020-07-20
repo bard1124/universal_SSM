@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.bard.universal_ssm.dao.SysRoleDao">
+    <select id="selectAll" resultType="SysRolePo">
+        select id,
+               role_name,
+               role_desc,
+               status,
+               create_date,
+               create_user,
+               update_date,
+               update_user
+          from sys_role
+         where status = 1
+    </select>
+
+    <select id="selectOne" resultType="SysRolePo">
+        select id,
+               role_name,
+               role_desc,
+               status,
+               create_date,
+               create_user,
+               update_date,
+               update_user
+          from sys_role
+         where id = #{id}
+           and status = 1
+    </select>
+
+    <insert id="insert" parameterType="SysRolePo" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_role (
+               role_name,
+               role_desc,
+               status,
+               create_date,
+               create_user
+             ) values (
+               #{roleName, jdbcType=VARCHAR},
+               #{roleDesc, jdbcType=VARCHAR},
+               #{status, jdbcType=INTEGER},
+               #{createDate, jdbcType=DATE},
+               #{createUser, jdbcType=VARCHAR}
+             )
+    </insert>
+
+    <update id="update" parameterType="SysRolePo">
+        update sys_role set
+        <if test="roleName != null">
+               role_name = #{roleName},
+        </if>
+        <if test="roleDesc != null">
+               role_desc = #{roleDesc},
+        </if>
+        <if test="status != null">
+               status = #{status},
+        </if>
+               update_date = #{updateDate},
+               update_user = #{updateUser}
+         where id = #{id}
+           and status = 1
+    </update>
+
+    <delete id="delete" parameterType="Integer">
+        delete from sys_role
+         where id = #{id}
+    </delete>
+
+    <select id="selectRoleByName" parameterType="String" resultType="SysRolePo">
+		 select t.id,t.role_name,t.role_desc
+	     from sys_role   t
+	    where status = 1
+	    and t.role_name=#{roleName}
+	</select>
+
+</mapper>

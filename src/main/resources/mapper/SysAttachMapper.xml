@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.bard.universal_ssm.dao.SysAttachDao">
+    <select id="selectAll" resultType="SysAttachPo">
+        select id,
+               file_id,
+               file_name,
+               attach_url,
+               attach_size,
+               status,
+               create_date,
+               create_user,
+               update_date,
+               update_user
+          from sys_attach
+         where status = 1
+    </select>
+
+    <select id="selectOne" resultType="SysAttachPo">
+        select id,
+               file_id,
+               file_name,
+               attach_url,
+               attach_size,
+               status,
+               create_date,
+               create_user,
+               update_date,
+               update_user
+          from sys_attach
+         where id = #{id}
+           and status = 1
+    </select>
+
+    <insert id="insert" parameterType="SysAttachPo" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_attach (
+               file_id,
+               file_name,
+               attach_url,
+               attach_size,
+               status,
+               create_date,
+               create_user
+             ) values (
+               #{fileId, jdbcType=BIGINT},
+               #{fileName, jdbcType=VARCHAR},
+               #{attachUrl, jdbcType=VARCHAR},
+               #{attachSize, jdbcType=BIGINT},
+               #{status, jdbcType=INTEGER},
+               #{createDate, jdbcType=DATE},
+               #{createUser, jdbcType=VARCHAR}
+             )
+    </insert>
+
+    <update id="update" parameterType="SysAttachPo">
+        update sys_attach set
+               file_id = #{fileId},
+        <if test="fileName != null">
+               file_name = #{fileName},
+        </if>
+               attach_url = #{attachUrl},
+               attach_size = #{attachSize},
+        <if test="status != null">
+               status = #{status},
+        </if>
+               update_date = #{updateDate},
+               update_user = #{updateUser}
+         where id = #{id}
+           and status = 1
+    </update>
+
+    <delete id="delete" parameterType="Integer">
+        delete from sys_attach
+         where id = #{id}
+    </delete>
+
+</mapper>

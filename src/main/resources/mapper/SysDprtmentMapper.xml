@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.bard.universal_ssm.dao.SysDprtmentDao">
+    <select id="selectAll" resultType="SysDprtmentPo">
+        select id,
+               dprtment_name,
+               ext_number,
+               company_id,
+               order_no,
+               status,
+               create_date,
+               create_user,
+               update_date,
+               update_user
+          from sys_dprtment
+         where status = 1
+    </select>
+
+    <select id="selectOne" resultType="SysDprtmentPo">
+        select id,
+               dprtment_name,
+               ext_number,
+               company_id,
+               order_no,
+               status,
+               create_date,
+               create_user,
+               update_date,
+               update_user
+          from sys_dprtment
+         where id = #{id}
+           and status = 1
+    </select>
+
+    <insert id="insert" parameterType="SysDprtmentPo" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_dprtment (
+               dprtment_name,
+               ext_number,
+               company_id,
+               order_no,
+               status,
+               create_date,
+               create_user
+             ) values (
+               #{dprtmentName, jdbcType=VARCHAR},
+               #{extNumber, jdbcType=VARCHAR},
+               #{companyId, jdbcType=INTEGER},
+               #{orderNo, jdbcType=INTEGER},
+               #{status, jdbcType=INTEGER},
+               #{createDate, jdbcType=DATE},
+               #{createUser, jdbcType=VARCHAR}
+             )
+    </insert>
+
+    <update id="update" parameterType="SysDprtmentPo">
+        update sys_dprtment set
+        <if test="dprtmentName != null">
+               dprtment_name = #{dprtmentName},
+        </if>
+        <if test="extNumber != null">
+               ext_number = #{extNumber},
+        </if>
+        <if test="companyId != null">
+               company_id = #{companyId},
+        </if>
+        <if test="orderNo != null">
+               order_no = #{orderNo},
+        </if>
+        <if test="status != null">
+               status = #{status},
+        </if>
+               update_date = #{updateDate},
+               update_user = #{updateUser}
+         where id = #{id}
+           and status = 1
+    </update>
+
+    <delete id="delete" parameterType="Integer">
+        delete from sys_dprtment
+         where id = #{id}
+    </delete>
+
+</mapper>

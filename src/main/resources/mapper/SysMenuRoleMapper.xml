@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.bard.universal_ssm.dao.SysMenuRoleDao">
+    <select id="selectAll" resultType="SysMenuRolePo">
+        select id,
+               roleid,
+               menuid
+          from sys_menu_role
+    </select>
+
+    <select id="selectOne" resultType="SysMenuRolePo">
+        select id,
+               roleid,
+               menuid
+          from sys_menu_role
+         where id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="SysMenuRolePo" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_menu_role (
+               roleid,
+               menuid
+             ) values (
+               #{roleid, jdbcType=INTEGER},
+               #{menuid, jdbcType=INTEGER}
+             )
+    </insert>
+
+    <update id="update" parameterType="SysMenuRolePo">
+        update sys_menu_role set
+        <if test="roleid != null">
+               roleid = #{roleid},
+        </if>
+               menuid = #{menuid}
+         where id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="Integer">
+        delete from sys_menu_role
+         where id = #{id}
+    </delete>
+
+</mapper>

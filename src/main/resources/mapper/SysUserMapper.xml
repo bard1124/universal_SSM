@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bard.universal_ssm.dao.SysUserDao">
+    <select id="selectAll" resultType="SysUserPo">
+        select id,
+               login_no,
+               username,
+               password,
+               sex,
+               email,
+               mobile_phone,
+               status,
+               create_date,
+               create_user,
+               update_date,
+               update_user
+          from sys_user
+         where status = 1
+    </select>
+
+    <select id="selectOne" resultType="SysUserPo">
+        select id,
+               login_no,
+               username,
+               password,
+               sex,
+               email,
+               mobile_phone,
+               status,
+               create_date,
+               create_user,
+               update_date,
+               update_user
+          from sys_user
+         where id = #{id}
+           and status = 1
+    </select>
+
+    <insert id="insert" parameterType="SysUserPo" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_user (
+               login_no,
+               username,
+               password,
+               sex,
+               email,
+               mobile_phone,
+               status,
+               create_date,
+               create_user
+             ) values (
+               #{loginNo, jdbcType=VARCHAR},
+               #{userName, jdbcType=VARCHAR},
+               #{password, jdbcType=VARCHAR},
+               #{sex, jdbcType=INTEGER},
+               #{email, jdbcType=VARCHAR},
+               #{mobilePhone, jdbcType=VARCHAR},
+               #{status, jdbcType=INTEGER},
+               #{createDate, jdbcType=DATE},
+               #{createUser, jdbcType=VARCHAR}
+             )
+    </insert>
+
+    <update id="update" parameterType="SysUserPo">
+        update sys_user set
+               login_no = #{loginNo},
+               username = #{userName},
+        <if test="password != null">
+               password = #{password},
+        </if>
+        <if test="sex != null">
+               sex = #{sex},
+        </if>
+        <if test="email != null">
+               email = #{email},
+        </if>
+        <if test="mobilePhone != null">
+               mobile_phone = #{mobilePhone},
+        </if>
+        <if test="status != null">
+               status = #{status},
+        </if>
+               update_date = #{updateDate},
+               update_user = #{updateUser}
+         where id = #{id}
+           and status = 1
+    </update>
+
+    <delete id="delete" parameterType="Integer">
+        delete from sys_user
+         where id = #{id}
+    </delete>
+
+    <select id="selectAllByKey" parameterType="String" resultType="SysUserPo">
+        select id,
+               login_no,
+               username,
+               password,
+               sex,
+               email,
+               mobile_phone,
+               isadmin,
+               status,
+               create_date,
+               create_user,
+               update_date,
+               update_user
+          from sys_user
+         where status = 1
+           and (
+               login_no like concat('%', concat(#{key}, '%'))
+            or username like concat('%', concat(#{key}, '%'))
+            or mobile_phone like concat('%', concat(#{key}, '%'))
+             )
+    </select>
+    
+    <select id="selectUserByAccount" resultType="SysUserPo">
+        select id,
+               login_no,
+               username,
+               password,
+               sex,
+               email,
+               mobile_phone,
+               status,
+               create_date,
+               create_user,
+               update_date,
+               update_user
+          from sys_user
+         where (login_no = #{account}
+            or mobile_phone = #{account})
+           and status = 1
+    </select>
+
+    <select id="selectUserRole" parameterType="Integer" resultType="RoleDto">
+        select t.id,
+               t.role_name,
+               t.role_desc,
+               t.status
+        from sys_role t
+        where t.id in (select t.roleid
+                       from sys_user_role t
+                       where t.userid = #{id})
+    </select>
+
+    <delete id="deleteUserRole" parameterType="Integer">
+        delete from sys_user_role
+        where userid = #{id}
+    </delete>
+
+    <insert id="insertUserRole">
+        insert into sys_user_role
+        (userid, roleid)
+        VALUE
+        <foreach collection="list" item="i" separator=",">
+            (#{id},
+            #{i})
+        </foreach>
+    </insert>
+</mapper>

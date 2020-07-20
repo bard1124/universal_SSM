@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+	<property name="LOG_PATH" value="D:/logs/trasim"/>
+	<!-- 控制台日志打印格式 -->
+	<appender name="consoleLog"
+		class="ch.qos.logback.core.ConsoleAppender">
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>
+				%d - %msg%n
+			</pattern>
+		</layout>
+	</appender>
+
+	<!-- 配置日志文件输出 info级别 -->
+	<appender name="fileInfoLog"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<!-- 根据LevelFilter 查看FilterReply枚举类型，还有一种NEUTRAL(中立) -->
+			<!-- NEUTRAL:忽略并继续往下判断，ACCEPT:接受，不往判断走 -->
+			<level>ERROR</level><!-- 禁止 -->
+			<onMatch>DENY</onMatch><!-- 接受 -->
+			<onMismatch>ACCEPT</onMismatch>
+		</filter>
+		<encoder>
+			<pattern>
+				%msg%n
+			</pattern>
+		</encoder>
+		<!--滚动策略 -->
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!--路径 -->
+			<fileNamePattern>
+				${LOG_PATH}/info_%d.log
+			</fileNamePattern>
+		</rollingPolicy>
+	</appender>
+
+	<!-- 配置日志文件输出 error级别 -->
+	<appender name="fileErrorLog"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>error</level>
+		</filter>
+		<encoder>
+			<pattern>%msg%n</pattern>
+		</encoder>
+		<!--滚动策略 -->
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!--路径 -->
+			<fileNamePattern>
+				${LOG_PATH}/error_%d.log
+			</fileNamePattern>
+		</rollingPolicy>
+	</appender>
+
+	<!-- 日志作用域：root(整个项目) -->
+	<root level="info">
+		<appender-ref ref="consoleLog" />
+		<appender-ref ref="fileInfoLog" />
+		<appender-ref ref="fileErrorLog" />
+	</root>
+</configuration>

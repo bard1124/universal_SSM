@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.bard.universal_ssm.dao.SysConstDao">
+    <select id="selectAll" resultType="SysConstPo">
+        select column_name,
+               value,
+               description,
+               status,
+               create_date,
+               create_user,
+               update_date,
+               update_user
+          from dss_simu_cmmn_const
+         where status = 1
+    </select>
+
+    <select id="selectOne" resultType="SysConstPo">
+        select column_name,
+               value,
+               description,
+               status,
+               create_date,
+               create_user,
+               update_date,
+               update_user
+          from dss_simu_cmmn_const
+         where column_name = #{columnName}
+           and status = 1
+    </select>
+
+    <insert id="insert" parameterType="SysConstPo">
+        insert into dss_simu_cmmn_const (
+               column_name,
+               value,
+               description,
+               status,
+               create_date,
+               create_user
+             ) values (
+               #{columnName, jdbcType=VARCHAR},
+               #{value, jdbcType=VARCHAR},
+               #{description, jdbcType=VARCHAR},
+               #{status, jdbcType=INTEGER},
+               #{createDate, jdbcType=DATE},
+               #{createUser, jdbcType=VARCHAR}
+             )
+    </insert>
+
+    <update id="update" parameterType="SysConstPo">
+        update dss_simu_cmmn_const set
+        <if test="value != null">
+               value = #{value},
+        </if>
+        <if test="description != null">
+               description = #{description},
+        </if>
+        <if test="status != null">
+               status = #{status},
+        </if>
+               update_date = #{updateDate},
+               update_user = #{updateUser}
+         where column_name = #{columnName}
+           and status = 1
+    </update>
+
+    <delete id="delete" parameterType="String">
+        delete from dss_simu_cmmn_const
+         where column_name = #{columnName}
+    </delete>
+
+</mapper>

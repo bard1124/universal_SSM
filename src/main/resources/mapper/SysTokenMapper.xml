@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.bard.universal_ssm.dao.SysTokenDao">
+    <select id="selectAll" resultType="SysTokenPo">
+        select id,
+               token,
+               userid,
+               login_time,
+               update_time,
+               expired_date
+          from sys_token
+    </select>
+
+    <select id="selectOne" resultType="SysTokenPo">
+        select id,
+               token,
+               userid,
+               login_time,
+               update_time,
+               expired_date
+          from sys_token
+         where id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="SysTokenPo" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_token (
+               token,
+               userid,
+               login_time,
+               update_time,
+               expired_date
+             ) values (
+               #{token, jdbcType=VARCHAR},
+               #{userid, jdbcType=INTEGER},
+               #{loginTime, jdbcType=DATE},
+               #{updateTime, jdbcType=DATE},
+               #{expiredDate, jdbcType=INTEGER}
+             )
+    </insert>
+
+    <update id="update" parameterType="SysTokenPo">
+        update sys_token set
+        <if test="token != null">
+               token = #{token},
+        </if>
+        <if test="userid != null">
+               userid = #{userid},
+        </if>
+        <if test="loginTime != null">
+               login_time = #{loginTime},
+        </if>
+        <if test="updateTime != null">
+               update_time = #{updateTime},
+        </if>
+               expired_date = #{expiredDate}
+         where id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="Integer">
+        delete from sys_token
+         where id = #{id}
+    </delete>
+    
+    <select id="selectTokenByUserid" parameterType="Integer" resultType="SysTokenPo">
+        select id,
+               token,
+               userid,
+               login_time,
+               update_time,
+               expired_date
+          from sys_token
+         where userid = #{userid}
+    </select>
+    
+    <select id="selectToken" parameterType="String" resultType="SysTokenPo">
+        select id,
+               token,
+               userid,
+               login_time,
+               update_time,
+               expired_date
+          from sys_token
+         where token = #{token}
+    </select>
+    
+</mapper>

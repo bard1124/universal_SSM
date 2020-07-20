@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.bard.universal_ssm.dao.SysUserEduExpDao">
+    <select id="selectAll" resultType="SysUserEduExpPo">
+        select id,
+               userid,
+               school_name,
+               speciality,
+               start_year,
+               start_month,
+               end_year,
+               end_month,
+               is_studing,
+               status,
+               create_date,
+               create_user,
+               update_date,
+               update_user
+          from sys_user_edu_exp
+         where status = 1
+    </select>
+
+    <select id="selectOne" resultType="SysUserEduExpPo">
+        select id,
+               userid,
+               school_name,
+               speciality,
+               start_year,
+               start_month,
+               end_year,
+               end_month,
+               is_studing,
+               status,
+               create_date,
+               create_user,
+               update_date,
+               update_user
+          from sys_user_edu_exp
+         where id = #{id}
+           and status = 1
+    </select>
+
+    <insert id="insert" parameterType="SysUserEduExpPo" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_user_edu_exp (
+               userid,
+               school_name,
+               speciality,
+               start_year,
+               start_month,
+               end_year,
+               end_month,
+               is_studing,
+               status,
+               create_date,
+               create_user
+             ) values (
+               #{userid, jdbcType=INTEGER},
+               #{schoolName, jdbcType=VARCHAR},
+               #{speciality, jdbcType=VARCHAR},
+               #{startYear, jdbcType=INTEGER},
+               #{startMonth, jdbcType=INTEGER},
+               #{endYear, jdbcType=INTEGER},
+               #{endMonth, jdbcType=INTEGER},
+               #{isStuding, jdbcType=INTEGER},
+               #{status, jdbcType=INTEGER},
+               #{createDate, jdbcType=DATE},
+               #{createUser, jdbcType=VARCHAR}
+             )
+    </insert>
+
+    <update id="update" parameterType="SysUserEduExpPo">
+        update sys_user_edu_exp set
+               userid = #{userid},
+               school_name = #{schoolName},
+        <if test="speciality != null">
+               speciality = #{speciality},
+        </if>
+        <if test="startYear != null">
+               start_year = #{startYear},
+        </if>
+        <if test="startMonth != null">
+               start_month = #{startMonth},
+        </if>
+        <if test="endYear != null">
+               end_year = #{endYear},
+        </if>
+        <if test="endMonth != null">
+               end_month = #{endMonth},
+        </if>
+        <if test="isStuding != null">
+               is_studing = #{isStuding},
+        </if>
+        <if test="status != null">
+               status = #{status},
+        </if>
+               update_date = #{updateDate},
+               update_user = #{updateUser}
+         where id = #{id}
+           and status = 1
+    </update>
+
+    <delete id="delete" parameterType="Integer">
+        delete from sys_user_edu_exp
+         where id = #{id}
+    </delete>
+
+</mapper>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.bard.universal_ssm.dao.SysUserProPhotoDao">
+    <select id="selectAll" resultType="SysUserProPhotoPo">
+        select id,
+               userid,
+               size,
+               image_url,
+               status,
+               create_date,
+               create_user,
+               update_date,
+               update_user
+          from sys_user_pro_photo
+         where status = 1
+    </select>
+
+    <select id="selectOne" resultType="SysUserProPhotoPo">
+        select id,
+               userid,
+               size,
+               image_url,
+               status,
+               create_date,
+               create_user,
+               update_date,
+               update_user
+          from sys_user_pro_photo
+         where id = #{id}
+           and status = 1
+    </select>
+
+    <insert id="insert" parameterType="SysUserProPhotoPo" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_user_pro_photo (
+               userid,
+               size,
+               image_url,
+               status,
+               create_date,
+               create_user
+             ) values (
+               #{userid, jdbcType=INTEGER},
+               #{size, jdbcType=INTEGER},
+               #{imageUrl, jdbcType=VARCHAR},
+               #{status, jdbcType=INTEGER},
+               #{createDate, jdbcType=DATE},
+               #{createUser, jdbcType=VARCHAR}
+             )
+    </insert>
+
+    <update id="update" parameterType="SysUserProPhotoPo">
+        update sys_user_pro_photo set
+               userid = #{userid},
+               size = #{size},
+               image_url = #{imageUrl},
+        <if test="status != null">
+               status = #{status},
+        </if>
+               update_date = #{updateDate},
+               update_user = #{updateUser}
+         where id = #{id}
+           and status = 1
+    </update>
+
+    <delete id="delete" parameterType="Integer">
+        delete from sys_user_pro_photo
+         where id = #{id}
+    </delete>
+
+    <delete id="deleteByUserId" parameterType="Integer">
+        delete from sys_user_pro_photo
+         where userid = #{id}
+    </delete>
+    
+    <select id="selectProPhotoByUserId" resultType="SysUserProPhotoPo">
+        select id,
+               userid,
+               size,
+               image_url,
+               status,
+               create_date,
+               create_user,
+               update_date,
+               update_user
+          from sys_user_pro_photo
+         where status = 1
+           and userid = #{id}
+    </select>
+</mapper>

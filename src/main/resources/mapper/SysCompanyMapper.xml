@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.bard.universal_ssm.dao.SysCompanyDao">
+    <select id="selectAll" resultType="SysCompanyPo">
+        select id,
+               company_name,
+               home_page,
+               company_profile,
+               phone_number,
+               fax,
+               email,
+               legal_repre,
+               address,
+               show_order,
+               status,
+               create_date,
+               create_user,
+               update_date,
+               update_user
+          from sys_company
+         where status = 1
+    </select>
+
+    <select id="selectOne" resultType="SysCompanyPo">
+        select id,
+               company_name,
+               home_page,
+               company_profile,
+               phone_number,
+               fax,
+               email,
+               legal_repre,
+               address,
+               show_order,
+               status,
+               create_date,
+               create_user,
+               update_date,
+               update_user
+          from sys_company
+         where id = #{id}
+           and status = 1
+    </select>
+
+    <insert id="insert" parameterType="SysCompanyPo" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_company (
+               company_name,
+               home_page,
+               company_profile,
+               phone_number,
+               fax,
+               email,
+               legal_repre,
+               address,
+               show_order,
+               status,
+               create_date,
+               create_user
+             ) values (
+               #{companyName, jdbcType=VARCHAR},
+               #{homePage, jdbcType=VARCHAR},
+               #{companyProfile, jdbcType=VARCHAR},
+               #{phoneNumber, jdbcType=VARCHAR},
+               #{fax, jdbcType=VARCHAR},
+               #{email, jdbcType=VARCHAR},
+               #{legalRepre, jdbcType=VARCHAR},
+               #{address, jdbcType=VARCHAR},
+               #{showOrder, jdbcType=INTEGER},
+               #{status, jdbcType=INTEGER},
+               #{createDate, jdbcType=DATE},
+               #{createUser, jdbcType=VARCHAR}
+             )
+    </insert>
+
+    <update id="update" parameterType="SysCompanyPo">
+        update sys_company set
+        <if test="companyName != null">
+               company_name = #{companyName},
+        </if>
+        <if test="homePage != null">
+               home_page = #{homePage},
+        </if>
+        <if test="companyProfile != null">
+               company_profile = #{companyProfile},
+        </if>
+        <if test="phoneNumber != null">
+               phone_number = #{phoneNumber},
+        </if>
+        <if test="fax != null">
+               fax = #{fax},
+        </if>
+        <if test="email != null">
+               email = #{email},
+        </if>
+        <if test="legalRepre != null">
+               legal_repre = #{legalRepre},
+        </if>
+        <if test="address != null">
+               address = #{address},
+        </if>
+        <if test="showOrder != null">
+               show_order = #{showOrder},
+        </if>
+        <if test="status != null">
+               status = #{status},
+        </if>
+               update_date = #{updateDate},
+               update_user = #{updateUser}
+         where id = #{id}
+           and status = 1
+    </update>
+
+    <delete id="delete" parameterType="Integer">
+        delete from sys_company
+         where id = #{id}
+    </delete>
+
+</mapper>

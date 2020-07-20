@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.bard.universal_ssm.dao.SysMenuDao">
+    <select id="selectAll" resultType="SysMenuPo">
+        select id,
+               name,
+               url,
+               showorder,
+               iconclass,
+               type,
+               parentid,
+               status
+          from sys_menu
+         where status = 1
+         order by showorder
+    </select>
+
+    <select id="selectOne" resultType="SysMenuPo">
+        select id,
+               name,
+               url,
+               showorder,
+               iconclass,
+               type,
+               parentid,
+               status
+          from sys_menu
+         where id = #{id}
+           and status = 1
+    </select>
+
+    <insert id="insert" parameterType="SysMenuPo" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_menu (
+               name,
+               url,
+               showorder,
+               iconclass,
+               type,
+               parentid,
+               status
+             ) values (
+               #{name, jdbcType=VARCHAR},
+               #{url, jdbcType=VARCHAR},
+               #{showorder, jdbcType=INTEGER},
+               #{iconclass, jdbcType=VARCHAR},
+               #{type, jdbcType=INTEGER},
+               #{parentid, jdbcType=INTEGER},
+               #{status, jdbcType=INTEGER}
+             )
+    </insert>
+
+    <update id="update" parameterType="SysMenuPo">
+        update sys_menu set
+        <if test="name != null">
+               name = #{name},
+        </if>
+        <if test="url != null">
+               url = #{url},
+        </if>
+        <if test="showorder != null">
+               showorder = #{showorder},
+        </if>
+        <if test="iconclass != null">
+               iconclass = #{iconclass},
+        </if>
+        <if test="type != null">
+               type = #{type},
+        </if>
+        <if test="parentid != null">
+               parentid = #{parentid},
+        </if>
+               status = #{status}
+         where id = #{id}
+           and status = 1
+    </update>
+
+    <delete id="delete" parameterType="Integer">
+        delete from sys_menu
+         where id = #{id}
+    </delete>
+
+    <select id="selectByUser" resultType="SysMenuPo">
+        select a.id,
+               a.name,
+               a.url,
+               a.showorder,
+               a.iconclass,
+               a.type,
+               a.parentid,
+               a.status
+          from sys_menu a
+         where a.status = 1
+           and exists (
+        select 1
+          from sys_user_role b, sys_menu_role c
+         where b.userid = #{userId}
+           and b.roleid = c.roleid
+           and c.menuid = a.id
+             )
+         order by a.showorder
+    </select>
+    <select id="listAllMenu" resultType="com.bard.universal_ssm.model.po.MenuTreePo">
+		select t.id,t.name as title,t.url as eng,case when t.parentid is null then 0 else t.parentid end as pid, t.type
+		  from sys_menu t
+		 where t.status = 1
+		order by t.id
+	</select>
+    <select id="listMenuByRoleId" resultType="com.bard.universal_ssm.model.po.MenuTreePo">
+		select t1.id,t1.name as title,case when t1.parentid is null then 0 else t1.parentid end as pid
+		 from sys_menu_role t
+		left join sys_menu t1 on t.menuid = t1.id and t1.status = 1
+		where t.roleId = #{roleId}
+	</select>
+
+    <delete id="deleteMenuRoleData" parameterType="java.lang.Integer">
+		delete from sys_menu_role
+		 where roleId = #{roleId}
+	</delete>
+    <insert id="saveMenuRoleData" parameterType="java.util.List">
+        insert into sys_menu_role
+        (roleId,menuId)
+        select s.* from (
+        <foreach collection="list" item="mt" index="index" separator="union all">
+            select #{mt.roleId},#{mt.menuId} from dual
+        </foreach>
+        ) s
+    </insert>
+</mapper>

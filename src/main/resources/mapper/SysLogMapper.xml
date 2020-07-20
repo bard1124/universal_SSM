@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.bard.universal_ssm.dao.SysLogDao">
+    <insert id="insert" parameterType="SysLogPo" useGeneratedKeys="true" keyProperty="id">
+        insert into dss_sys_log (
+               create_time,
+               exception_detail,
+               result,
+               log_type,
+               request_ip,
+               username,
+               login_name,
+               description,
+               org_id,
+               about_component
+             ) values (
+               #{createTime, jdbcType=TIMESTAMP},
+               #{exceptionDetail, jdbcType=VARCHAR},
+               #{result, jdbcType=VARCHAR},
+               #{logType, jdbcType=INTEGER},
+               #{requestIp, jdbcType=VARCHAR},
+               #{username, jdbcType=VARCHAR},
+               #{loginName, jdbcType=VARCHAR},
+               #{description, jdbcType=VARCHAR},
+               #{orgId, jdbcType=INTEGER},
+               #{aboutComponent, jdbcType=VARCHAR}
+             )
+    </insert>
+
+</mapper>

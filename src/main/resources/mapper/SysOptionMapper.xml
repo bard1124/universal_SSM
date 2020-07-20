@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.bard.universal_ssm.dao.SysOptionDao">
+    <select id="selectAll" resultType="SysOptionPo">
+        select id,
+               value,
+               text,
+               pid,
+               status,
+               create_date,
+               create_user,
+               update_date,
+               update_user
+          from dss_simu_cmmn_option
+         where status = 1
+    </select>
+
+    <select id="selectOne" resultType="SysOptionPo">
+        select id,
+               value,
+               text,
+               pid,
+               status,
+               create_date,
+               create_user,
+               update_date,
+               update_user
+          from dss_simu_cmmn_option
+         where id = #{id}
+           and status = 1
+    </select>
+
+    <insert id="insert" parameterType="SysOptionPo" useGeneratedKeys="true" keyProperty="id">
+        insert into dss_simu_cmmn_option (
+               value,
+               text,
+               pid,
+               status,
+               create_date,
+               create_user
+             ) values (
+               #{value, jdbcType=VARCHAR},
+               #{text, jdbcType=VARCHAR},
+               #{pid, jdbcType=INTEGER},
+               #{status, jdbcType=INTEGER},
+               #{createDate, jdbcType=DATE},
+               #{createUser, jdbcType=VARCHAR}
+             )
+    </insert>
+
+    <update id="update" parameterType="SysOptionPo">
+        update dss_simu_cmmn_option set
+               value = #{value},
+        <if test="text != null">
+               text = #{text},
+        </if>
+               pid = #{pid},
+        <if test="status != null">
+               status = #{status},
+        </if>
+               update_date = #{updateDate},
+               update_user = #{updateUser}
+         where id = #{id}
+           and status = 1
+    </update>
+
+    <delete id="delete" parameterType="Integer">
+        delete from dss_simu_cmmn_option
+         where id = #{id}
+    </delete>
+
+	<select id="selectOptionByPid" parameterType="Integer" resultType="SysOptionPo">
+		select id,
+		       value,
+		       text,
+		       pid,
+		       status,
+		       create_date,
+		       create_user,
+		       update_date,
+		       update_user
+		  from dss_simu_cmmn_option
+		 where status = 1
+		   and pid = #{pid}
+		 order by id
+	</select>
+</mapper>

@@ -1,0 +1,5 @@
+mybatis:
+    mapper-locations: classpath:mapper/*.xml
+    type-aliases-package: com.bard.universal_ssm.model.po, com.bard.universal_ssm.model.bo, com.bard.universal_ssm.model.dto
+    configuration:
+        map-underscore-to-camel-case: true

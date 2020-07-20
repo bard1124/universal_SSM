@@ -1,0 +1,3 @@
+logging:
+    level:
+        com.bard.universal_ssm.dao: debug
